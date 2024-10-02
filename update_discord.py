@@ -1,6 +1,8 @@
 import requests
 import json
 
+file_path = '/opt/discord/discord.desktop'
+
 url = "https://discord.com/api/download/stable?platform=linux&format=tar.gz"
 response = requests.get(url)
 
@@ -29,4 +31,16 @@ if response.status_code == 200:
         print(f"Error: {build_info_path} not found.")
 else:
     print(f"Failed to retrieve the URL, status code: {response.status_code}")
+
+with open(file_path, 'r') as file:
+    content = file.read()
+
+modified_content = content.replace(
+    'Exec=/usr/bin/discord', 'Exec=bash -c "cd ~ && /usr/bin/discord"'
+)
+
+with open(file_path, 'w') as file:
+    file.write(modified_content)
+
+
 
